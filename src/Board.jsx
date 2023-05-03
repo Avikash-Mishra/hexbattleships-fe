@@ -1,16 +1,28 @@
 import BoardCell from "./BoardCell";
 import styled from 'styled-components'
+import useSize from '@react-hook/size'
+import React from "react";
 
 const Wrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+`;
+
+const Grid = styled.div`
     display: grid;
-    grid-template-columns: repeat(${p => p.width * 2 + 1}, min(${p => p.cellWidth}vw, ${p => p.cellHeight}vh));
-    grid-template-rows: repeat(${p => p.height}, min(${p => p.cellWidth * 2 / 1.1547}vw, ${p => p.cellHeight * 2 / 1.1547}vh));
+    grid-template-columns: repeat(${p => p.width * 2 + 1}, ${p => p.cellWidth}px);
+    grid-template-rows: repeat(${p => p.height}, ${p => p.cellWidth * 2 / 1.1547}px);
     transform: perspective(1200px) rotateX(18deg);
-    transform-origin: bottom;
     perspective: 1200px;
+    align-content: center;
 `;
 
 function Board({width, height, data, onClick}) {
+    const target = React.useRef(null);
+    const [elementWidth, elementHeight] = useSize(target);
+
     const cells = [];
     data.forEach((row, y) => {
         row.forEach((cell, x) => {
@@ -21,15 +33,18 @@ function Board({width, height, data, onClick}) {
         })
     });
 
-    // The ideal size of each cell in vw
-    const cellWidth = 100 / (width * 2 + 4);
-
-    // The idea cell width given in vh
-    const cellHeight = 100 / (height + 2) / 2 * 1.1547;
+    // The ideal size of each cell in px
+    const cellWidth = Math.min(
+        // 1.18 is a fudge factor to try allow for the
+        // grid getting wider due to perspective
+        elementWidth / (width * 2 * 1.18),
+        elementHeight / (height + 2) / 2 * 1.1547);
 
     return (
-        <Wrapper width={width} height={height} cellWidth={cellWidth} cellHeight={cellHeight}>
+        <Wrapper ref={target}>
+        <Grid width={width} height={height} cellWidth={cellWidth}>
         {cells}
+        </Grid>
         </Wrapper>
       )
 }
