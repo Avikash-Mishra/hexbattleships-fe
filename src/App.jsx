@@ -33,7 +33,7 @@ function initialData(height, width) {
   for (var y=0; y < height; y++) {
     const row = [];
     for (var x=0; x < width; x++) {
-      row.push({uncovered: false})
+      row.push({uncovered: false, hits:[0,1,3,5]})
     }
     data.push(row);
   }

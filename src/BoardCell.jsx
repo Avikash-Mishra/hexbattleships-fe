@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { COLORS } from './colors';
 
 const HexCell = styled.div.attrs(props => ({
     style: {
@@ -40,16 +41,27 @@ const HexCell = styled.div.attrs(props => ({
     }
 `
 
-function BoardCell({x, y, uncovered, onClick}) {
+const HitDot = styled.div`
+    width: 25%;
+    aspect-ratio: 1;
+    background-color: ${p => p.color};
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: 37.5%;
+    top: 37.5%;
+    transform: rotate(${p => p.idx * 60}deg) translate(0, 130%);
+`;
+
+function BoardCell({x, y, data, onClick}) {
     return (
       <HexCell x={x} y={y}
       onClick={onClick}
-      className={uncovered ? 'uncovered' : 'covered'}>
+      className={data.uncovered ? 'uncovered' : 'covered'}>
         <div className="front">
-
+            {data.hits.map(p => (<HitDot idx={p} color={COLORS[p]}></HitDot>))}
         </div>
         <div className="back">
-
         </div>
       </HexCell>
     )

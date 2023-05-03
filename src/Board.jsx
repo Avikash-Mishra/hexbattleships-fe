@@ -10,10 +10,13 @@ const Wrapper = styled.div`
     justify-content: center;
 `;
 
-const Grid = styled.div`
+const Grid = styled.div.attrs(props => ({
+    style: {
+        gridTemplateColumns: `repeat(${props.width * 2 + 1}, ${props.cellWidth}px)`,
+        gridTemplateRows: `repeat(${props.height}, ${props.cellWidth * 2 / 1.1547}px)`
+    },
+  }))`
     display: grid;
-    grid-template-columns: repeat(${p => p.width * 2 + 1}, ${p => p.cellWidth}px);
-    grid-template-rows: repeat(${p => p.height}, ${p => p.cellWidth * 2 / 1.1547}px);
     transform: perspective(1200px) rotateX(18deg);
     perspective: 1200px;
     align-content: center;
@@ -27,7 +30,7 @@ function Board({width, height, data, onClick}) {
     data.forEach((row, y) => {
         row.forEach((cell, x) => {
             cells.push(<BoardCell x={x} y={y}
-                uncovered={cell.uncovered}
+                data={cell}
                 onClick={() => onClick(x, y)}
                 key={`${x}-${y}`}></BoardCell>)
         })
