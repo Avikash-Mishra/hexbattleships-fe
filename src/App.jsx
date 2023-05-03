@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components'
 import Board from './Board'
+import Players from './Players';
 
 const Container = styled.div`
   display: flex;
@@ -20,12 +21,12 @@ const FlexWrapper = styled.div`
 const SidePanel = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 300px;
+  flex-basis: 250px;
   border-style: solid;
   border-radius: 20px;
   margin: 20px;
   box-shadow: #38383875 3px 5px 14px 0px;
-
+  padding: 40px 20px;
 `;
 
 function initialData(height, width) {
@@ -46,6 +47,15 @@ function initialData(height, width) {
   return data;
 }
 
+const PLAYERS = [
+  "Tim",
+  "Avi",
+  "Sofia",
+  "Brad",
+  "Maël",
+  "Karl"
+];
+
 function App() {
   const height = 11;
   const width = 18;
@@ -65,7 +75,9 @@ function App() {
         <Board height={height} width={width} data={data} onClick={onClick}></Board>
       </FlexWrapper>
 
-      <SidePanel></SidePanel>
+      <SidePanel>
+        <Players players={PLAYERS} turnIdx={1}></Players>
+      </SidePanel>
     </Container>
   )
 }
