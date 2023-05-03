@@ -53,6 +53,17 @@ const HitDot = styled.div`
     transform: rotate(${p => p.idx * 60}deg) translate(0, 130%);
 `;
 
+const OwnDot = styled.div`
+    width: 25%;
+    aspect-ratio: 1;
+    background-color: ${p => p.color};
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: 37.5%;
+    top: 37.5%;
+`;
+
 function BoardCell({x, y, data, onClick}) {
     return (
       <HexCell x={x} y={y}
@@ -62,6 +73,7 @@ function BoardCell({x, y, data, onClick}) {
             {data.hits.map(p => (<HitDot idx={p} color={COLORS[p]}></HitDot>))}
         </div>
         <div className="back">
+            {data.ownShip && (<OwnDot color={COLORS[data.playerIdx]}></OwnDot>)}
         </div>
       </HexCell>
     )

@@ -33,7 +33,13 @@ function initialData(height, width) {
   for (var y=0; y < height; y++) {
     const row = [];
     for (var x=0; x < width; x++) {
-      row.push({uncovered: false, hits:[0,1,3,5]})
+      const hits = [];
+      for (var i =0; i< 6; i++) {
+        if (Math.random() < 0.07) {
+          hits.push(i);
+        }
+      }
+      row.push({uncovered: false, hits: hits, playerIdx: 1, ownShip: hits.includes(1)})
     }
     data.push(row);
   }
