@@ -7,18 +7,19 @@ const Wrapper = styled.div`
     grid-template-rows: repeat(${p => p.height}, min(${p => p.cellWidth * 2 / 1.1547}vw, ${p => p.cellHeight * 2 / 1.1547}vh));
     transform: perspective(1200px) rotateX(18deg);
     transform-origin: bottom;
+    perspective: 1200px;
 `;
 
-function Board() {
-    const width = 20;
-    const height = 13;
+function Board({width, height, data, onClick}) {
     const cells = [];
-    for (var i=0; i < height; i++) {
-        for (var j=0; j < width * 2; j+=2) {
-            const x = i % 2 == 0 ? j : j + 1;
-            cells.push(<BoardCell x={x} y={i} key={`${x}-${i}`}></BoardCell>)
-        }
-    }
+    data.forEach((row, y) => {
+        row.forEach((cell, x) => {
+            cells.push(<BoardCell x={x} y={y}
+                uncovered={cell.uncovered}
+                onClick={() => onClick(x, y)}
+                key={`${x}-${y}`}></BoardCell>)
+        })
+    });
 
     // The ideal size of each cell in vw
     const cellWidth = 100 / (width * 2 + 4);
