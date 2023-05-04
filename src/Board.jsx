@@ -22,7 +22,7 @@ const Grid = styled.div.attrs(props => ({
     align-content: center;
 `;
 
-function Board({width, height, data, onClick}) {
+function Board({width, height, data, onClick, playerIdx}) {
     const target = React.useRef(null);
     const [elementWidth, elementHeight] = useSize(target);
 
@@ -31,6 +31,7 @@ function Board({width, height, data, onClick}) {
         row.forEach((cell, x) => {
             cells.push(<BoardCell x={x} y={y}
                 data={cell}
+                playerIdx={playerIdx}
                 onClick={() => onClick(x, y)}
                 key={`${x}-${y}`}></BoardCell>)
         })

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import Board from './Board'
 import Players from './Players';
@@ -29,54 +29,38 @@ const SidePanel = styled.div`
   padding: 40px 20px;
 `;
 
-function initialData(height, width) {
-  const data = [];
-  for (var y=0; y < height; y++) {
-    const row = [];
-    for (var x=0; x < width; x++) {
-      const hits = [];
-      for (var i =0; i< 6; i++) {
-        if (Math.random() < 0.07) {
-          hits.push(i);
-        }
-      }
-      row.push({uncovered: false, hits: hits, playerIdx: 1, ownShip: hits.includes(1)})
-    }
-    data.push(row);
-  }
-  return data;
-}
-
-const PLAYERS = [
-  "Tim",
-  "Avi",
-  "Sofia",
-  "Brad",
-  "Maël",
-  "Karl"
-];
-
 function App() {
-  const height = 11;
-  const width = 18;
-  const [data, setData] = useState(() => initialData(height, width));
+  const [board, setBoard] = useState({height:0, width:0, data:[]});
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(
+        '/game/f1ea207c-e151-4a1d-a8ef-8f96a44fdff5',
+      );
+      const data = await result.json()
+      setBoard(data.board);
+      setPlayers(data.players);
+    }
+    fetchData()
+}, [])
 
   function onClick(x, y) {
-    setData(data.map((row, dy) =>
+    setBoard({...board, data: board.data.map((row, dy) =>
       dy == y ?
       row.map((cell, dx) => dx == x ? {...cell, uncovered: true} : cell) :
       row
-    ))
+    )})
   }
 
   return (
     <Container>
       <FlexWrapper>
-        <Board height={height} width={width} data={data} onClick={onClick}></Board>
+        <Board height={board.height} width={board.width} data={board.data} playerIdx={1} onClick={onClick}></Board>
       </FlexWrapper>
 
       <SidePanel>
-        <Players players={PLAYERS} turnIdx={1}></Players>
+        <Players players={players} turnIdx={1}></Players>
       </SidePanel>
     </Container>
   )

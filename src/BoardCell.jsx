@@ -64,16 +64,16 @@ const OwnDot = styled.div`
     top: 37.5%;
 `;
 
-function BoardCell({x, y, data, onClick}) {
+function BoardCell({x, y, data, onClick, playerIdx}) {
     return (
       <HexCell x={x} y={y}
       onClick={onClick}
       className={data.uncovered ? 'uncovered' : 'covered'}>
         <div className="front">
-            {data.hits.map(p => (<HitDot idx={p} color={COLORS[p]}></HitDot>))}
+            {data.hits.map(p => (<HitDot key={p} idx={p} color={COLORS[p]}></HitDot>))}
         </div>
         <div className="back">
-            {data.ownShip && (<OwnDot color={COLORS[data.playerIdx]}></OwnDot>)}
+            {data.ownShip && (<OwnDot color={COLORS[playerIdx]}></OwnDot>)}
         </div>
       </HexCell>
     )

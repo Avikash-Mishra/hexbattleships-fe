@@ -29,7 +29,7 @@ const PlayerName = styled.h3`
 
 function Players({players, turnIdx}) {
     return <>
-        {players.map((name, idx) => <Player color={COLORS[idx]} name={name} isTurn={turnIdx==idx}></Player>)}
+        {players.map((player, idx) => <Player key={idx} color={COLORS[idx]} name={player.name} isTurn={turnIdx==idx}></Player>)}
     </>;
 }
 
